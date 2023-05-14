@@ -63,7 +63,7 @@ $(document).ready(function(){
 
 
    $('.sidebar-group-link').click(function(){
-
+      
       $('.sidebar-group-link').removeClass('sidebar-group-link-active');
       $('.sidebar-group-link').children('.sidebar-dropdown-toggle').children('.angle').removeClass('fa-angle-down');
       $('.sidebar-group-link').children('.sidebar-dropdown-toggle').children('.angle').addClass('fa-angle-left');
@@ -114,4 +114,4 @@ $(document).ready(function(){
       }
    }
 
-
+  

@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('head-tag')
-<title>برندها</title>
+<title>برند</title>
 @endsection
 
 @section('content')
@@ -43,7 +43,7 @@
                         <section class="col-12 col-md-6">
                             <div class="form-group">
                                 <label for="">دسته والد</label>
-                                <input type="file" class="form-control form-control-sm" id="">
+                                <input type="file" class="form-control form-control-sm">
                             </div>
                         </section>
                         <section class="col-12">
