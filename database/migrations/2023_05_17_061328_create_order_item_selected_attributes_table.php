@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('order_item_selected_attributes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('order_item_id')->constrained('order_items')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('category_attribute_id')->constrained('category_attributes')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('category_value_id')->constrained('category_values')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('value')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
