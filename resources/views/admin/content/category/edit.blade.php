@@ -30,13 +30,14 @@
             </section>
 
             <section>
-                <form id="form" action="{{ route('admin.content.category.store') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('admin.content.category.update',$postCategory->id) }}" method="post" enctype="multipart/form-data">
                     @csrf
+                    @method('put')
                     <section class="row">
                         <section class="col-12 col-md-6 my-2">
                             <div class="form-group">
                                 <label for="name">نام دسته</label>
-                                <input value="{{ old('name') }}" type="text" id="name" name="name" class="form-control form-control-sm">
+                                <input value="{{ old('name',$postCategory->name) }}" type="text" id="name" name="name" class="form-control form-control-sm">
                             </div>
                             @error('name')
                                  <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
@@ -50,10 +51,7 @@
                         <section class="col-12 col-md-6 my-2">
                             <div class="form-group">
                                 <label for="tags">تگ ها</label>
-                                <input value="{{ old('tags') }}" type="hidden" name="tags" id="tags" class="form-control form-control-sm">
-                                <select multiple id="select_tags" class="select2 form-control form-control-sm" >
-
-                                </select>
+                                <input value="{{ old('tags',$postCategory->tags) }}" type="text" name="tags" id="tags" class="form-control form-control-sm">
                             </div>
                             @error('tags')
                                  <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
@@ -68,8 +66,8 @@
                             <div class="form-group">
                                 <label for="status">وضعیت</label>
                                 <select id="status" name="status" class="form-control form-control-sm">
-                                    <option value="0" @if(old('status')==0) selected @endif>غیرفعال</option>
-                                    <option value="1" @if(old('status')==1) selected @endif>فعال</option>
+                                    <option value="0" @if(old('status',$postCategory->status)==0) selected @endif>غیرفعال</option>
+                                    <option value="1" @if(old('status',$postCategory->status)==1) selected @endif>فعال</option>
                                 </select>
                             </div>
                             @error('status')
@@ -99,7 +97,7 @@
                             <div class="form-group">
                                 <label for="description" >توضیحات</label>
                                 <textarea name="description" id="description" class="form-conrol form-control-sm" rows="6">
-                                    {{ old('description') }}
+                                    {{ old('description',$postCategory->description) }}
                                 </textarea>
                             </div>
                             @error('description')
@@ -129,23 +127,6 @@
     <script src="{{ asset('admin-assets/ckeditor/ckeditor.js') }}"></script>
     <script>
         CKEDITOR.replace('description');
-    </script>
-    <script>
-        $(document).ready(function(){
-            var tags_input = $('#tags');
-            var select_tags = $('#select_tags');
-            select_tags.select2({
-                placeholder: 'لطفا تگ های خود را وارد نمایید',
-                tags: true
-            });
-            $('#form').submit(function(event){
-                if(select_tags.val() !== null && select_tags.val.length > 0){
-                    var selectedSource = select_tags.val().join(',');
-                    tags_input.val(selectedSource);
-                }
-            });
-        });
-
     </script>
 
 @endsection
