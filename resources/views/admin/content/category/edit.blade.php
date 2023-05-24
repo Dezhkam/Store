@@ -30,7 +30,7 @@
             </section>
 
             <section>
-                <form action="{{ route('admin.content.category.update',$postCategory->id) }}" method="post" enctype="multipart/form-data">
+                <form id="form" action="{{ route('admin.content.category.update',$postCategory->id) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     @method('put')
                     <section class="row">
@@ -51,7 +51,10 @@
                         <section class="col-12 col-md-6 my-2">
                             <div class="form-group">
                                 <label for="tags">تگ ها</label>
-                                <input value="{{ old('tags',$postCategory->tags) }}" type="text" name="tags" id="tags" class="form-control form-control-sm">
+                                <input value="{{ old('tags',$postCategory->tags) }}" type="hidden" name="tags" id="tags" class="form-control form-control-sm">
+                                <select multiple id="select_tags" class="select2 form-control form-control-sm" >
+
+                                </select>
                             </div>
                             @error('tags')
                                  <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
@@ -128,5 +131,29 @@
     <script>
         CKEDITOR.replace('description');
     </script>
+<script>
+    $(document).ready(function(){
+        var tags_input = $('#tags');
+        var select_tags = $('#select_tags');
+        var default_tags = tags_input.val();
+        var default_data = null;
+        if(tags_input.val() !== null && tags_input.val().length>0)
+        {
+            default_data = default_tags.split(',');
+        }
+        select_tags.select2({
+            placeholder: 'لطفا تگ های خود را وارد نمایید',
+            tags: true,
+            data: default_data
+        });
+        select_tags.children('option').attr('selected',true).trigger('change');
+        $('#form').submit(function(event){
+            if(select_tags.val() !== null && select_tags.val.length > 0){
+                var selectedSource = select_tags.val().join(',');
+                tags_input.val(selectedSource);
+            }
+        });
+    });
 
+</script>
 @endsection
