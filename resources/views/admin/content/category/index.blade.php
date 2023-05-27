@@ -63,7 +63,7 @@
                                     <form class="d-inline" action="{{ route('admin.content.category.destroy',$postCategory->id) }}" method="post">
                                         @csrf
                                         @method('delete')
-                                        <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
+                                        <button class="btn btn-danger btn-sm delete" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
                                     </form>
                                 </td>
                             </tr>
@@ -136,4 +136,5 @@
                 });
         }
 </script>
+@include('admin.alerts.sweetalert.delete-confirm',['className'=>'delete'])
 @endsection
