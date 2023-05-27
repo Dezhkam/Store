@@ -138,4 +138,27 @@ class ImageToolsService{
 
         return $this;
     }
+    protected function checkDirectory($imageDirectory){
+        if(!file_exists($imageDirectory))
+            mkdir($imageDirectory,666,true);
+    }
+    public function getImageAddress(){
+        return $this->finalImageDirectory . DIRECTORY_SEPARATOR . $this->finalImageName;
+    }
+    protected function provider(){
+        // set properties
+        $this->getImageDirectory() ?? $this->setImageDirectory(date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR . date('d') );
+        $this->getImageName() ?? $this->setImageName(time());
+        $this->getImageFormat() ?? $this->setImageFormat($this->image->extension());
+
+        // set Final Image Directory
+        $finalImageDirectory = empty($this->getExclusiveDirectory()) ? $this->getImageDirectory() : $this->getExclusiveDirectory() . DIRECTORY_SEPARATOR . $this->getImageDirectory();
+        $this->setFinalImageDirectory($finalImageDirectory);
+
+        // set Final Image Name
+        $this->setFinalImageName($this->getImageName() . '.' . $this->getImageFormat());
+
+        // check and create Final Image Directory
+        $this->checkDirectory($this->getFinalImageDirectory());
+    }
 }
