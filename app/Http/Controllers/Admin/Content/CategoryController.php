@@ -43,9 +43,9 @@ class CategoryController extends Controller
         $inputs = $request->all();
         $inputs['slug'] = str_replace(' ','-',$inputs['name']) . '-' . Str::random(5);
         $postCategory  = PostCategory::create($inputs);
-        return redirect()->route('admin.content.category.index');
+        return redirect()->route('admin.content.category.index')->with('swal-success','دسته بندی جدید با موفقیت ایجاد گردید')->with('toast','toast-success','دسته بندی جدید با موفقیت ایجاد گرددی')->with('toast','alert-section-success','دسته بندی جدید با موفقیت ایجاد گرددی');
     }
-
+S
     /**
      * Display the specified resource.
      *
