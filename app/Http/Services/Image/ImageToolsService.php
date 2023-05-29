@@ -161,4 +161,5 @@ class ImageToolsService{
         // check and create Final Image Directory
         $this->checkDirectory($this->getFinalImageDirectory());
     }
+    
 }
