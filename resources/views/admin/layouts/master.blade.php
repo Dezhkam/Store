@@ -11,6 +11,8 @@
 
     @include('admin.layouts.header')
 
+
+
     <section class="body-container">
 
         @include('admin.layouts.sidebar')
@@ -31,7 +33,10 @@
         @include('admin.alerts.toast.success')
         @include('admin.alerts.toast.error')
     </section>
+
     @include('admin.alerts.sweetalert.error')
     @include('admin.alerts.sweetalert.success')
+
+
 </body>
 </html>

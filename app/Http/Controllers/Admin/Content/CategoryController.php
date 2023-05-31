@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Content\PostCategory;
+use App\Http\Services\Image\ImageService;
 use App\Http\Requests\Admin\Content\PostCategoryRequest;
 
 class CategoryController extends Controller
@@ -18,6 +19,9 @@ class CategoryController extends Controller
     public function index()
     {
         $postCategories = PostCategory::orderBy('created_at', 'desc')->simplePaginate(15);
+        // dd($postCategories[0]['image']['indexArray']['large']);
+        // dd($postCategories[0]['image']['currentImage']);
+
         return view('admin.content.category.index', compact('postCategories'));
     }
 
@@ -37,12 +41,22 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PostCategoryRequest $request)
+    public function store(PostCategoryRequest $request, ImageService $imageService)
     {
         $inputs = $request->all();
-        // I used the sluggable package and no need to this code yet.
-        // $inputs['slug'] = str_replace(' ', '-', $inputs['name']) . '-' . Str::random(5);
-        $inputs['image'] = 'image';
+        if($request->hasFile('image'))
+        {
+            $imageService->setExclusiveDirectory('images' . DIRECTORY_SEPARATOR . 'post-category');
+            // $result = $imageService->save($request->file('image'));
+            // $result = $imageService->fitAndSave($request->file('image'), 600, 150);
+            // exit;
+            $result = $imageService->createIndexAndSave($request->file('image'));
+        }
+        if($result === false)
+        {
+            return redirect()->route('admin.content.category.index')->with('swal-error', 'آپلود تصویر با خطا مواجه شد');
+        }
+        $inputs['image'] = $result;
         $postCategory = PostCategory::create($inputs);
         return redirect()->route('admin.content.category.index')->with('swal-success', 'دسته بندی جدید شما با موفقیت ثبت شد');
     }
@@ -81,7 +95,7 @@ class CategoryController extends Controller
         $inputs = $request->all();
         $inputs['image'] = 'image';
         $postCategory->update($inputs);
-        return redirect()->route('admin.content.category.index')->with('swal-success', 'دسته بندی مورد با موفقیت ویرایش گردید');
+        return redirect()->route('admin.content.category.index')->with('swal-success', 'دسته بندی شما با موفقیت ویرایش شد');;
     }
 
     /**
@@ -93,7 +107,7 @@ class CategoryController extends Controller
     public function destroy(PostCategory $postCategory)
     {
        $result = $postCategory->delete();
-       return redirect()->route('admin.content.category.index')->with('swal-success', 'دسته بندی شما با موفقیت حذف شد')->with('swal-success', 'دسته بندی مورد با موفقیت حذف گردید');
+       return redirect()->route('admin.content.category.index')->with('swal-success', 'دسته بندی شما با موفقیت حذف شد');
     }
 
 
